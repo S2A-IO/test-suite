@@ -1,0 +1,36 @@
+{
+  "name": "s2a-test-suite",
+  "version": "0.1.0",
+  "description": "S2A Test suite for quality assessment of s2a apps.",
+  "keywords": [
+    "quality",
+    "performance",
+    "security"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://rehanali@bitbucket.org/riksof-sqa/curi-app.git"
+  },
+  "homepage": "https://s2a.io",
+  "license": "UNLICENSED",
+  "author": "RIKSOF (Private) Limited <info@riksof.com>",
+  "dependencies": {
+    "chai": "4.2.0",
+    "fs-extra": "8.1.0",
+    "minimist": "1.2.0",
+    "mocha": "6.2.0",
+    "node-html-parser": "1.1.16",
+    "ts-node": "8.3.0",
+    "typescript": "3.5.3"
+  },
+  "devDependencies": {
+    "@types/chai": "4.2.0",
+    "@types/mocha": "5.2.7",
+    "@types/node": "12.7.1"
+  },
+  "scripts": {
+    "postinstall": "node ./bin/install.s2a.js",
+    "test": "mocha -r ts-node/register",
+    "test:all": "mocha -r ts-node/register src/**/*.spec.ts"
+  }
+}
