@@ -51,3 +51,48 @@ export const getAppName = ( argv: any[] ): string => {
   const params = minimist( argv.slice( 2 ) );
   return params.app;
 };
+
+/**
+ * Execute passed function on all views of given type on the passed build.
+ *
+ * @param {any} build           Build to work on.
+ * @param {string} viewType     View type to look for (form, report, tabs).
+ * @param {(): any} cb          Call back to execute.
+ *
+ * @returns {undefined} None.
+ */
+export const forAllViews = ( build: any, viewType: string,
+  cb: ( t: string, s: string, ss: string, i: number ) => void ): void => {
+  // Go through all the urls.
+  let typ: string[] = Object.keys( build.urls );
+
+  // Parent part of the url.
+  for ( let i = 0; i < typ.length; i++ ) {
+    let t: string = typ[ i ];
+
+    // Sections in the url.
+    let sects: string[]  = Object.keys( build.urls[ t ] );
+
+    // Go through all the sections.
+    for ( let j = 0; j < sects.length; j++ ) {
+      let s: string = sects[ j ];
+
+      // Go through all the sub sections.
+      let subs: string[] = Object.keys( build.urls[ t ][ s ].sections );
+      for ( let k = 0; k < subs.length; k++ ) {
+        let ss: string = subs[ k ];
+        let views: any[] = build.urls[ t ][ s ].sections[ ss ];
+
+        // Now go through all the views.
+        for ( let l = 0; l < views.length; l++ ) {
+          let v: any = views[ l ];
+
+          // If this view is a type of viewType.
+          if ( v.type === viewType ) {
+            cb( t, s, ss, l );
+          }
+        }
+      }
+    }
+  }
+};
