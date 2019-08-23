@@ -20,7 +20,8 @@ describe( 'Navigation Performance - No network operation before a redirect', () 
       let a: any = actions[ j ];
 
       // If we have a network operation.
-      if ( a.task === 'pullpush' || a.task === 'push' ) {
+      if ( a.task === 'pullpush' || a.task === 'push' || a.task === 'notify' ||
+        a.task === 'pr' ) {
         networkOps.push( a.task + '@' + j );
       }
 
