@@ -1,7 +1,7 @@
 /**
  * @author Copyright RIKSOF (Private) Limited.
  *
- * @file Checks the correct usage of relation keys.
+ * @file Perform no network operations before a redirect.
  */
 import { forAllActions, getBuild } from '../../loader';
 import { assert } from 'chai';
