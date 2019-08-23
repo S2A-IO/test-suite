@@ -1,28 +1,26 @@
 /**
  * @author Copyright RIKSOF (Private) Limited.
  *
- * @file Queries should have a limit that does not exceed 100.
+ * @file With larger resultset, user projections to reduce result size.
  */
 import { forAllActions, forAllViews, getBuild } from '../../loader';
 import { assert } from 'chai';
 import 'mocha';
 
-describe( 'Queries Performance - Queries should have a limit that does not exceed 100', () => {
+describe( 'Queries Performance - Queries with limit more than 10 should use projections', () => {
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
 
-  // Given an array of actions, ensure there are limits on loadData
+  // Given an array of actions, ensure there are limits on resulting data size
+  // for loadData tasks
   const checkActions = ( actions: any[] ): void => {
     for ( let j = 0; j < actions.length; j++ ) {
       let a: any = actions[ j ];
 
       // If we have a loadData ensure it has a limit
-      if ( a.task === 'loadData' ) {
-        assert( a.data.limit != null, 'Queries should enforce a data limit' );
-
-        if ( a.data.limit ) {
-          assert( a.data.limit <= 100, 'Query limits should not exceed 100' );
-        }
+      if ( a.task === 'loadData' && a.data.limit > 10 ) {
+        assert( a.data.map != null && a.data.map.values.length > 0,
+          'Use map.values in queries to reduce data size.' );
       }
     }
   }
@@ -49,12 +47,9 @@ describe( 'Queries Performance - Queries should have a limit that does not excee
       let view: any = build.urls[ t ][ s ].sections[ ss ][ i ];
 
       // If the view has a data construct.
-      if ( view.data ) {
-        assert( view.data.limit != null, 'Queries should enforce a data limit' );
-
-        if ( view.data.limit ) {
-          assert( view.data.limit <= 100, 'Query limits should not exceed 100' );
-        }
+      if ( view.data && view.data.limit > 10 ) {
+        assert( view.data.map != null && view.data.map.values.length > 0,
+          'Use map.values in queries to reduce data size.' );
       }
     });
   });
