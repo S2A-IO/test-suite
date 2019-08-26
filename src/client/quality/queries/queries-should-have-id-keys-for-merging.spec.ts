@@ -11,11 +11,13 @@ describe( 'Queries - Queries should use idKeys for merging data when using map r
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
 
-  const checkIdKeys = ( query: any ): void => {
+  const checkIdKeys = ( query: any, idx?: number ): void => {
+    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
+
     // If the query has projections with reduce, then we should have idKeys.
     if ( query.projections ) {
       assert( query.projections.reduce == null || ( query.idKeys != null && query.idKeys.length > 0 ),
-        'Queries with reduce projections should have idKeys to support merging of local results' );
+        prefix + 'Queries with reduce projections should have idKeys to support merging of local results' );
 
       // Ensure the idKeys exist in the results.
       if ( query.idKeys != null && query.idKeys.length > 0 ) {
@@ -29,14 +31,14 @@ describe( 'Queries - Queries should use idKeys for merging data when using map r
 
         for ( let k = 0; k < query.idKeys.length; k++ ) {
           let f: string = query.idKeys[ k ];
-          assert( availableKeys.indexOf( f ) >= 0, 'ID key ' + f
+          assert( availableKeys.indexOf( f ) >= 0, prefix + 'ID key ' + f
             + ' does not exist in the result with keys ' + availableKeys );
         }
       }
     } else {
       // If there are no projections, we should not use idKeys.
       assert( query.idKeys == null || query.idKeys.length === 0,
-        'If there are no projections, idKeys should not be used' );
+        prefix + 'If there are no projections, idKeys should not be used' );
     }
   }
 
@@ -47,7 +49,7 @@ describe( 'Queries - Queries should use idKeys for merging data when using map r
 
       // If we have a loadData ensure it has a limit
       if ( a.task === 'loadData' ) {
-        checkIdKeys( a.data );
+        checkIdKeys( a.data, j );
       }
     }
   }
