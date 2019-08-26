@@ -12,10 +12,10 @@ describe( 'Queries - Queries should use idKeys for merging data when using map r
   let build: any = getBuild( process.argv, process.cwd() );
 
   const checkIdKeys = ( query: any ): void => {
-    // If the query has projections, then we should have idKeys.
+    // If the query has projections with reduce, then we should have idKeys.
     if ( query.projections ) {
-      assert( query.idKeys != null && query.idKeys.length > 0,
-        'Queries with projections should have idKeys to support merging of local results' );
+      assert( query.projections.reduce == null || ( query.idKeys != null && query.idKeys.length > 0 ),
+        'Queries with reduce projections should have idKeys to support merging of local results' );
 
       // Ensure the idKeys exist in the results.
       if ( query.idKeys != null && query.idKeys.length > 0 ) {
@@ -33,6 +33,10 @@ describe( 'Queries - Queries should use idKeys for merging data when using map r
             + ' does not exist in the result with keys ' + availableKeys );
         }
       }
+    } else {
+      // If there are no projections, we should not use idKeys.
+      assert( query.idKeys == null || query.idKeys.length === 0,
+        'If there are no projections, idKeys should not be used' );
     }
   }
 
