@@ -11,6 +11,11 @@ describe( 'Queries Performance - Queries should have a refresh time greater than
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
 
+  const checkRefreshTime = ( query: any, idx?: number ): void => {
+    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
+    assert( query.refresh >= 300, prefix + 'Query should have refresh time greater than 300 seconds' );
+  }
+
   // Given an array of actions, ensure there are limits on loadData
   const checkActions = ( actions: any[] ): void => {
     for ( let j = 0; j < actions.length; j++ ) {
@@ -18,7 +23,7 @@ describe( 'Queries Performance - Queries should have a refresh time greater than
 
       // If we have a loadData ensure it has a limit
       if ( a.task === 'loadData' ) {
-        assert( a.data.refresh >= 300, 'Query should have refresh time greater than 300 seconds' );
+        checkRefreshTime( a.data, j );
       }
     }
   }
@@ -46,7 +51,7 @@ describe( 'Queries Performance - Queries should have a refresh time greater than
 
       // If the view has a data construct.
       if ( view.data ) {
-        assert( view.data.refresh >= 300, 'Query should have refresh time greater than 300 seconds' );
+        checkRefreshTime( view.data );
       }
     });
   });

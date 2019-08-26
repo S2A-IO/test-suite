@@ -11,6 +11,16 @@ describe( 'Queries Performance - Queries should have a limit that does not excee
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
 
+  const checkLimit = ( query: any, idx?: number ): void => {
+    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
+
+    assert( query.limit != null, prefix + 'Queries should enforce a data limit' );
+
+    if ( query.limit ) {
+      assert( query.limit <= 100, prefix + 'Query limits should not exceed 100' );
+    }
+  }
+
   // Given an array of actions, ensure there are limits on loadData
   const checkActions = ( actions: any[] ): void => {
     for ( let j = 0; j < actions.length; j++ ) {
@@ -18,11 +28,7 @@ describe( 'Queries Performance - Queries should have a limit that does not excee
 
       // If we have a loadData ensure it has a limit
       if ( a.task === 'loadData' ) {
-        assert( a.data.limit != null, 'Queries should enforce a data limit' );
-
-        if ( a.data.limit ) {
-          assert( a.data.limit <= 100, 'Query limits should not exceed 100' );
-        }
+        checkLimit( a.data, j );
       }
     }
   }
@@ -50,11 +56,7 @@ describe( 'Queries Performance - Queries should have a limit that does not excee
 
       // If the view has a data construct.
       if ( view.data ) {
-        assert( view.data.limit != null, 'Queries should enforce a data limit' );
-
-        if ( view.data.limit ) {
-          assert( view.data.limit <= 100, 'Query limits should not exceed 100' );
-        }
+        checkLimit( view.data );
       }
     });
   });

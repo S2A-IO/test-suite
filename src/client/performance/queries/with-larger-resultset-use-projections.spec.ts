@@ -11,6 +11,15 @@ describe( 'Queries Performance - Queries with limit more than 10 should use proj
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
 
+  const checkLimit = ( query: any, idx?: number ): void => {
+    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
+
+    if ( query.limit > 10 ) {
+      assert( query.map != null && query.map.values.length > 0,
+        prefix + 'Use map.values in queries to reduce data size.' );
+    }
+  }
+
   // Given an array of actions, ensure there are limits on resulting data size
   // for loadData tasks
   const checkActions = ( actions: any[] ): void => {
@@ -18,9 +27,8 @@ describe( 'Queries Performance - Queries with limit more than 10 should use proj
       let a: any = actions[ j ];
 
       // If we have a loadData ensure it has a limit
-      if ( a.task === 'loadData' && a.data.limit > 10 ) {
-        assert( a.data.map != null && a.data.map.values.length > 0,
-          'Use map.values in queries to reduce data size.' );
+      if ( a.task === 'loadData' ) {
+        checkLimit( a.data, j );
       }
     }
   }
@@ -47,9 +55,8 @@ describe( 'Queries Performance - Queries with limit more than 10 should use proj
       let view: any = build.urls[ t ][ s ].sections[ ss ][ i ];
 
       // If the view has a data construct.
-      if ( view.data && view.data.limit > 10 ) {
-        assert( view.data.map != null && view.data.map.values.length > 0,
-          'Use map.values in queries to reduce data size.' );
+      if ( view.data ) {
+        checkLimit( view.data );
       }
     });
   });
