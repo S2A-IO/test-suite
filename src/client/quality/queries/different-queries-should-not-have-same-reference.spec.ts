@@ -21,7 +21,7 @@ describe( 'Queries - Different queries should not use same reference key', () =>
     let ref: string = typeof query.reference === 'string' ? query.reference : query.reference.toString();
 
     // If the reference for this query already exists.
-    let data: any = referenceKeyMap.get( ref );
+    let data: any = referenceKeyMap.get( ref + query.branch );
 
     // We have found the data so need to compare our current query with it.
     if ( data ) {
@@ -32,7 +32,7 @@ describe( 'Queries - Different queries should not use same reference key', () =>
         prefix + 'Same reference is used for a different query at: ' + data.url );
     } else {
       // Add a new entry to the map.
-      referenceKeyMap.set( ref, {
+      referenceKeyMap.set( ref + query.branch, {
         query: serializer.serialize( query ),
         url: summary + ' ' + prefix
       })
