@@ -5,7 +5,7 @@
  * caching.
  */
 import { forAllActions, forAllViews, getBuild } from '../../loader';
-import { checkQueryReferenceKey } from '../../../common/QueryChecker';
+import { checkSimilarQueries } from '../../../common/QueryChecker';
 import { assert } from 'chai';
 import 'mocha';
 
@@ -21,7 +21,7 @@ describe( 'Queries - Similar queries should not use different reference keys', (
 
       // If we have a loadData, execute checks on it.
       if ( a.task === 'loadData' ) {
-        checkQueryReferenceKey( a.data, summary, queryMap, j );
+        checkSimilarQueries( a.data, summary, queryMap, j );
       }
     }
   }
@@ -49,7 +49,7 @@ describe( 'Queries - Similar queries should not use different reference keys', (
 
       // If the view has a data construct.
       if ( view.data ) {
-        checkQueryReferenceKey( view.data, 'Data: /' + t + '/' + s + '/' + ss + '[' + i + ']', queryMap );
+        checkSimilarQueries( view.data, 'Data: /' + t + '/' + s + '/' + ss + '[' + i + ']', queryMap );
       }
     });
   });

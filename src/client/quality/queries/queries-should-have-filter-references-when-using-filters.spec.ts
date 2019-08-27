@@ -4,30 +4,13 @@
  * @file Queries should have correct filter references.
  */
 import { forAllActions, forAllViews, getBuild } from '../../loader';
+import { checkQueryFilters } from '../../../common/QueryChecker';
 import { assert } from 'chai';
 import 'mocha';
 
 describe( 'Queries - Should have filter references when filters are used', () => {
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
-
-  const checkFilters = ( query: any, idx?: number ): void => {
-    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
-    let keys: string[] = Object.keys( query.filters );
-
-    // If there are filters, ensure there are filter reference fields.
-    if ( keys.length > 0 ) {
-      assert( query.referenceFields.length > 0, prefix +
-        'Queries with filters should have reference fields' );
-
-      // Ensure the reference fields exist in the filter.
-      for ( let k = 0; k < query.referenceFields.length; k++ ) {
-        let f: string = query.referenceFields[ k ];
-        assert( query.filters[ f ] != null, prefix +
-          'Filter reference key ' + f + ' does not exist' );
-      }
-    }
-  }
 
   // Given an array of actions, ensure there are limits on loadData
   const checkActions = ( actions: any[] ): void => {
@@ -36,7 +19,7 @@ describe( 'Queries - Should have filter references when filters are used', () =>
 
       // If we have a loadData ensure it has a limit
       if ( a.task === 'loadData' ) {
-        checkFilters( a.data, j );
+        checkQueryFilters( a.data, j );
       }
     }
   }
@@ -64,7 +47,7 @@ describe( 'Queries - Should have filter references when filters are used', () =>
 
       // If the view has a data construct.
       if ( view.data ) {
-        checkFilters( view.data );
+        checkQueryFilters( view.data );
       }
     });
   });

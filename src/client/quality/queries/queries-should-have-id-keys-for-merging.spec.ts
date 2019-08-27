@@ -4,43 +4,13 @@
  * @file Queries should use idKeys when using map reduce.
  */
 import { forAllActions, forAllViews, getBuild } from '../../loader';
+import { checkQueryIdKeys } from '../../../common/QueryChecker';
 import { assert } from 'chai';
 import 'mocha';
 
 describe( 'Queries - Queries should use idKeys for merging data when using map reduce', () => {
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
-
-  const checkIdKeys = ( query: any, idx?: number ): void => {
-    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
-
-    // If the query has projections with reduce, then we should have idKeys.
-    if ( query.projections ) {
-      assert( query.projections.reduce == null || ( query.idKeys != null && query.idKeys.length > 0 ),
-        prefix + 'Queries with reduce projections should have idKeys to support merging of local results' );
-
-      // Ensure the idKeys exist in the results.
-      if ( query.idKeys != null && query.idKeys.length > 0 ) {
-        // Keys available to be used as id.
-        let availableKeys: string[];
-
-        // If we have reduce in projections, then the keys should exist there.
-        // Otherwise, take the keys from map.values in projections.
-        if ( query.projections.reduce ) availableKeys = Object.keys( query.projections.reduce );
-        else availableKeys = query.projections.map.values;
-
-        for ( let k = 0; k < query.idKeys.length; k++ ) {
-          let f: string = query.idKeys[ k ];
-          assert( availableKeys.indexOf( f ) >= 0, prefix + 'ID key ' + f
-            + ' does not exist in the result with keys ' + availableKeys );
-        }
-      }
-    } else {
-      // If there are no projections, we should not use idKeys.
-      assert( query.idKeys == null || query.idKeys.length === 0,
-        prefix + 'If there are no projections, idKeys should not be used' );
-    }
-  }
 
   // Given an array of actions, ensure there are limits on loadData
   const checkActions = ( actions: any[] ): void => {
@@ -49,7 +19,7 @@ describe( 'Queries - Queries should use idKeys for merging data when using map r
 
       // If we have a loadData ensure it has a limit
       if ( a.task === 'loadData' ) {
-        checkIdKeys( a.data, j );
+        checkQueryIdKeys( a.data, j );
       }
     }
   }
@@ -77,7 +47,7 @@ describe( 'Queries - Queries should use idKeys for merging data when using map r
 
       // If the view has a data construct.
       if ( view.data ) {
-        checkIdKeys( view.data );
+        checkQueryIdKeys( view.data );
       }
     });
   });
