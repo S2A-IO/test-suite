@@ -4,17 +4,13 @@
  * @file Queries should have a refresh time of 5 minutes.
  */
 import { forAllActions, forAllViews, getBuild } from '../../loader';
+import { checkQueryRefreshTime } from '../../../common/QueryChecker';
 import { assert } from 'chai';
 import 'mocha';
 
 describe( 'Queries Performance - Queries should have a refresh time greater than 5 mins', () => {
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
-
-  const checkRefreshTime = ( query: any, idx?: number ): void => {
-    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
-    assert( query.refresh >= 300, prefix + 'Query should have refresh time greater than 300 seconds' );
-  }
 
   // Given an array of actions, ensure there are limits on loadData
   const checkActions = ( actions: any[] ): void => {
@@ -23,7 +19,7 @@ describe( 'Queries Performance - Queries should have a refresh time greater than
 
       // If we have a loadData ensure it has a limit
       if ( a.task === 'loadData' ) {
-        checkRefreshTime( a.data, j );
+        checkQueryRefreshTime( a.data, j );
       }
     }
   }
@@ -51,7 +47,7 @@ describe( 'Queries Performance - Queries should have a refresh time greater than
 
       // If the view has a data construct.
       if ( view.data ) {
-        checkRefreshTime( view.data );
+        checkQueryRefreshTime( view.data );
       }
     });
   });

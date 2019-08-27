@@ -4,22 +4,13 @@
  * @file Queries should have a limit that does not exceed 100.
  */
 import { forAllActions, forAllViews, getBuild } from '../../loader';
+import { checkQueryLimit } from '../../../common/QueryChecker';
 import { assert } from 'chai';
 import 'mocha';
 
 describe( 'Queries Performance - Queries should have a limit that does not exceed 100', () => {
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
-
-  const checkLimit = ( query: any, idx?: number ): void => {
-    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
-
-    assert( query.limit != null, prefix + 'Queries should enforce a data limit' );
-
-    if ( query.limit ) {
-      assert( query.limit <= 100, prefix + 'Query limits should not exceed 100' );
-    }
-  }
 
   // Given an array of actions, ensure there are limits on loadData
   const checkActions = ( actions: any[] ): void => {
@@ -28,7 +19,7 @@ describe( 'Queries Performance - Queries should have a limit that does not excee
 
       // If we have a loadData ensure it has a limit
       if ( a.task === 'loadData' ) {
-        checkLimit( a.data, j );
+        checkQueryLimit( a.data, j );
       }
     }
   }
@@ -56,7 +47,7 @@ describe( 'Queries Performance - Queries should have a limit that does not excee
 
       // If the view has a data construct.
       if ( view.data ) {
-        checkLimit( view.data );
+        checkQueryLimit( view.data );
       }
     });
   });

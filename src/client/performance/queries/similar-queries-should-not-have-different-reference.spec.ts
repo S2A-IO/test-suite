@@ -4,8 +4,8 @@
  * @file Similar queries should not have the different references for improved
  * caching.
  */
-import { ObjectSerializer } from '../../../common/ObjectSerializer';
 import { forAllActions, forAllViews, getBuild } from '../../loader';
+import { checkQueryReferenceKey } from '../../../common/QueryChecker';
 import { assert } from 'chai';
 import 'mocha';
 
@@ -13,32 +13,6 @@ describe( 'Queries - Similar queries should not use different reference keys', (
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
   let queryMap: Map<string, any> = new Map<string, any>();
-  let serializer = new ObjectSerializer();
-
-  const checkReferenceKey = ( query: any, summary: string, idx?: number ): void => {
-    let prefix: string = idx ? 'Step ' + idx + ': ' : '';
-
-    // Create string from main query parts.
-    let qString: string = query.branch === 'string' ? query.branch : query.branch.toString();
-    qString += serializer.serialize( query.query );
-    qString += serializer.serialize( query.filters );
-    qString += query.self;
-
-    // If map entry for this query already exists.
-    let data: any = queryMap.get( qString );
-
-    // We have found the data so need to compare our current query with it.
-    if ( data ) {
-      assert( query.reference === data.query.reference,
-        prefix + 'Similar query is used with a different reference at: ' + data.url );
-    } else {
-      // Add a new entry to the map.
-      queryMap.set( qString, {
-        query: query,
-        url: summary + ' ' + prefix
-      })
-    }
-  }
 
   // Given an array of actions, find loadData queries.
   const checkActions = ( actions: any[], summary: string ): void => {
@@ -47,7 +21,7 @@ describe( 'Queries - Similar queries should not use different reference keys', (
 
       // If we have a loadData, execute checks on it.
       if ( a.task === 'loadData' ) {
-        checkReferenceKey( a.data, summary, j );
+        checkQueryReferenceKey( a.data, summary, queryMap, j );
       }
     }
   }
@@ -75,7 +49,7 @@ describe( 'Queries - Similar queries should not use different reference keys', (
 
       // If the view has a data construct.
       if ( view.data ) {
-        checkReferenceKey( view.data, 'Data: /' + t + '/' + s + '/' + ss + '[' + i + ']' );
+        checkQueryReferenceKey( view.data, 'Data: /' + t + '/' + s + '/' + ss + '[' + i + ']', queryMap );
       }
     });
   });
