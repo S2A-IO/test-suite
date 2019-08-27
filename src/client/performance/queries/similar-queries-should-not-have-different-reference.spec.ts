@@ -1,40 +1,40 @@
 /**
  * @author Copyright RIKSOF (Private) Limited.
  *
- * @file Different queries should not have the same reference.
+ * @file Similar queries should not have the different references for improved
+ * caching.
  */
 import { ObjectSerializer } from '../../../common/ObjectSerializer';
 import { forAllActions, forAllViews, getBuild } from '../../loader';
 import { assert } from 'chai';
 import 'mocha';
 
-describe( 'Queries - Different queries should not use same reference key', () => {
+describe( 'Queries - Similar queries should not use different reference keys', () => {
   // Get the build.
   let build: any = getBuild( process.argv, process.cwd() );
-  let referenceKeyMap: Map<string, any> = new Map<string, any>();
+  let queryMap: Map<string, any> = new Map<string, any>();
   let serializer = new ObjectSerializer();
 
   const checkReferenceKey = ( query: any, summary: string, idx?: number ): void => {
     let prefix: string = idx ? 'Step ' + idx + ': ' : '';
 
-    // Get query reference.
-    let ref: string = typeof query.reference === 'string' ? query.reference : query.reference.toString();
-    let branch: string = typeof query.branch === 'string' ? query.branch : query.branch.toString();
+    // Create string from main query parts.
+    let qString: string = query.branch === 'string' ? query.branch : query.branch.toString();
+    qString += serializer.serialize( query.query );
+    qString += serializer.serialize( query.filters );
+    qString += query.self;
 
-    // If the reference for this query already exists.
-    let data: any = referenceKeyMap.get( ref + branch );
+    // If map entry for this query already exists.
+    let data: any = queryMap.get( qString );
 
     // We have found the data so need to compare our current query with it.
     if ( data ) {
-      // Get the query string for this query.
-      let q: string = serializer.serialize( query );
-
-      assert( q === data.query,
-        prefix + 'Same reference is used for a different query at: ' + data.url );
+      assert( query.reference === data.query.reference,
+        prefix + 'Similar query is used with a different reference at: ' + data.url );
     } else {
       // Add a new entry to the map.
-      referenceKeyMap.set( ref + branch, {
-        query: serializer.serialize( query ),
+      queryMap.set( qString, {
+        query: query,
         url: summary + ' ' + prefix
       })
     }
