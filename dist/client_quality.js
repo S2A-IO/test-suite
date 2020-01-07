@@ -349,17 +349,6 @@ eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/*
 
 /***/ }),
 
-/***/ "./src/server sync recursive":
-/*!*************************!*\
-  !*** ./src/server sync ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("function webpackEmptyContext(req) {\n\tvar e = new Error(\"Cannot find module '\" + req + \"'\");\n\te.code = 'MODULE_NOT_FOUND';\n\tthrow e;\n}\nwebpackEmptyContext.keys = function() { return []; };\nwebpackEmptyContext.resolve = webpackEmptyContext;\nmodule.exports = webpackEmptyContext;\nwebpackEmptyContext.id = \"./src/server sync recursive\";\n\n//# sourceURL=webpack:///./src/server_sync?");
-
-/***/ }),
-
 /***/ "./src/server/loader.ts":
 /*!******************************!*\
   !*** ./src/server/loader.ts ***!
@@ -368,7 +357,7 @@ eval("function webpackEmptyContext(req) {\n\tvar e = new Error(\"Cannot find mod
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/**\r\n * @author Copyright RIKSOF (Private) Limited.\r\n *\r\n * @file Loader for the build.\r\n */\r\nvar path = __webpack_require__(/*! path */ \"path\");\r\nvar minimist = __webpack_require__(/*! minimist */ \"minimist\");\r\n/**\r\n * Build loader for server.\r\n *\r\n * @param {any[]} argv          Arguments received.\r\n * @param {string} cwd          Current working directory.\r\n *\r\n * @returns {any} build         Instance of the build.\r\n */\r\nexports.getServerBuild = function (argv, cwd) {\r\n    var params = minimist(argv.slice(2));\r\n    var p = path.isAbsolute(params.src) ?\r\n        path.join(params.src, 'process', params.app) :\r\n        path.join(cwd, params.src, 'process', params.app);\r\n    var ServerBuild = __webpack_require__(\"./src/server sync recursive\")(p);\r\n    return new ServerBuild();\r\n};\r\n/**\r\n * Get the source root for the app.\r\n *\r\n * @param {any[]} argv          Arguments received.\r\n * @param {string} cwd          Current working directory.\r\n *\r\n * @returns {any} build         Instance of the build.\r\n */\r\nexports.getSrcRoot = function (argv, cwd) {\r\n    var params = minimist(argv.slice(2));\r\n    var p = path.isAbsolute(params.src) ?\r\n        params.src : path.join(cwd, params.src);\r\n    return p;\r\n};\r\n/**\r\n * Get the name of the server app.\r\n *\r\n * @param {any[]} argv          Arguments received.\r\n *\r\n * @returns {string} app        Name of the app.\r\n */\r\nexports.getServerName = function (argv) {\r\n    var params = minimist(argv.slice(2));\r\n    return params.app;\r\n};\r\n\n\n//# sourceURL=webpack:///./src/server/loader.ts?");
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/**\r\n * @author Copyright RIKSOF (Private) Limited.\r\n *\r\n * @file Loader for the build.\r\n */\r\nvar path = __webpack_require__(/*! path */ \"path\");\r\nvar minimist = __webpack_require__(/*! minimist */ \"minimist\");\r\n/**\r\n * Build loader for server.\r\n *\r\n * @param {any[]} argv          Arguments received.\r\n * @param {string} cwd          Current working directory.\r\n *\r\n * @returns {any} build         Instance of the build.\r\n */\r\nexports.getServerBuild = function (argv, cwd) {\r\n    var params = minimist(argv.slice(2));\r\n    var p = path.isAbsolute(params.server) ? params.server :\r\n        path.join(cwd, params.server);\r\n    var ServerBuild = require(p);\r\n    return new ServerBuild();\r\n};\r\n/**\r\n * Get the source root for the app.\r\n *\r\n * @param {any[]} argv          Arguments received.\r\n * @param {string} cwd          Current working directory.\r\n *\r\n * @returns {any} build         Instance of the build.\r\n */\r\nexports.getSrcRoot = function (argv, cwd) {\r\n    var params = minimist(argv.slice(2));\r\n    var p = path.isAbsolute(params.src) ?\r\n        params.src : path.join(cwd, params.src);\r\n    return p;\r\n};\r\n/**\r\n * Get the name of the server app.\r\n *\r\n * @param {any[]} argv          Arguments received.\r\n *\r\n * @returns {string} app        Name of the app.\r\n */\r\nexports.getServerName = function (argv) {\r\n    var params = minimist(argv.slice(2));\r\n    return params.app;\r\n};\r\n\n\n//# sourceURL=webpack:///./src/server/loader.ts?");
 
 /***/ }),
 

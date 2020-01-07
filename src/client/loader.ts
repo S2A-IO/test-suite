@@ -6,6 +6,8 @@
 const path = require( 'path' );
 const minimist = require( 'minimist' );
 
+declare const __non_webpack_require__: any;
+
 /**
  * Build loader.
  *
@@ -16,11 +18,9 @@ const minimist = require( 'minimist' );
  */
 export const getBuild = ( argv: any[], cwd: string ): any => {
   const params = minimist( argv.slice( 2 ) );
-  const p = path.isAbsolute( params.src ) ?
-    path.join( params.src, 'builds', params.app ) :
-    path.join( cwd, params.src, 'builds', params.app );
+  const p = path.isAbsolute( params.app ) ? params.app : path.join( cwd, params.app );
 
-  const AppBuild = require( p );
+  const AppBuild = __non_webpack_require__( p );
   return new AppBuild();
 };
 
