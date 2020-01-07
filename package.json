@@ -1,6 +1,6 @@
 {
-  "name": "s2a-test-suite",
-  "version": "0.1.0",
+  "name": "@s2a/test-suite",
+  "version": "0.2.0",
   "description": "S2A Test suite for quality assessment of s2a apps.",
   "keywords": [
     "quality",
