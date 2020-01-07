@@ -25,19 +25,17 @@ export const getBuild = ( argv: any[], cwd: string ): any => {
 };
 
 /**
- * Get the source root for the app.
+ * Build root path.
  *
  * @param {any[]} argv          Arguments received.
  * @param {string} cwd          Current working directory.
  *
- * @returns {any} build         Instance of the build.
+ * @returns {any} buildRoot     The root path to the build for this app.
  */
-export const getSrcRoot = ( argv: any[], cwd: string ): string => {
+export const getBuildRoot = ( argv: any[], cwd: string ): any => {
   const params = minimist( argv.slice( 2 ) );
-  const p = path.isAbsolute( params.src ) ?
-    params.src : path.join( cwd, params.src );
-
-  return p;
+  const p = path.isAbsolute( params.app ) ? params.app : path.join( cwd, params.app );
+  return path.dirname( p );
 };
 
 /**

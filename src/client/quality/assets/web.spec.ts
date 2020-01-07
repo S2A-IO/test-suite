@@ -6,27 +6,26 @@
 const path = require( 'path' );
 const fs = require( 'fs-extra' );
 
-import { getBuild, getSrcRoot } from '../../loader';
+import { getBuild, getBuildRoot } from '../../loader';
 import { assert } from 'chai';
 import 'mocha';
 
 /**
  * Check if given asset is part of the app.
  *
- * @param {string} srcRoot            Path to the root of the app.
+ * @param {string} buildRoot          Path to the root of the build folder.
  * @param {string} p                  Relative path to the asset from root.
  *
  * @returns {boolean} exists          True if it exists, false otherwise.
  */
-function doesAssetExist( srcRoot: string, p: string ): Promise<boolean> {
-  const assetPath: string = p.startsWith( 'builds' ) ?
-    path.join( srcRoot, p ) : path.join( srcRoot, 'builds', p );
+function doesAssetExist( buildRoot: string, p: string ): Promise<boolean> {
+  const assetPath: string = path.join( buildRoot, p );
   return fs.pathExists( assetPath );
 }
 
 describe( 'Assets - Web', () => {
   const build: any = getBuild( process.argv, process.cwd() );
-  const srcRoot: string = getSrcRoot( process.argv, process.cwd() );
+  const buildRoot: string = getBuildRoot( process.argv, process.cwd() );
 
   /** Test 1 **/
   describe( '# Ensure all referenced web assets exist', () => {
@@ -38,7 +37,7 @@ describe( 'Assets - Web', () => {
       // Check each file.
       it( 'Asset: ' + p[ i ], () => {
         // If the specified asset is not in the source folder.
-        return doesAssetExist( srcRoot, p[ i ] ).then( ( result ) => {
+        return doesAssetExist( buildRoot, p[ i ] ).then( ( result ) => {
           assert( result, 'This asset does not exist in the source folder.' );
           return result;
         });

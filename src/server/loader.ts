@@ -26,22 +26,6 @@ export const getServerBuild = ( argv: any[], cwd: string ): any => {
 };
 
 /**
- * Get the source root for the app.
- *
- * @param {any[]} argv          Arguments received.
- * @param {string} cwd          Current working directory.
- *
- * @returns {any} build         Instance of the build.
- */
-export const getSrcRoot = ( argv: any[], cwd: string ): string => {
-  const params = minimist( argv.slice( 2 ) );
-  const p = path.isAbsolute( params.src ) ?
-    params.src : path.join( cwd, params.src );
-
-  return p;
-};
-
-/**
  * Get the name of the server app.
  *
  * @param {any[]} argv          Arguments received.

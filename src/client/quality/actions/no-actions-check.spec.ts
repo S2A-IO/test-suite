@@ -24,9 +24,9 @@ describe( 'Actions - There should be no empty actions', () => {
         assert( keys.length > 0,
           'Error actions object should not be empty. Do not declare it, if not required' );
 
-        // Check for empty error actions.
+        // Check for empty error actions unless its the general error action.
         for ( let j = 0; j < keys.length; j++ ) {
-          assert( errorActions[ keys[ j ] ].length > 0,
+          assert( keys[ j ] === 'general' || errorActions[ keys[ j ] ].length > 0,
             'Error actions is empty for key: ' + keys[ j ] );
         }
       }
