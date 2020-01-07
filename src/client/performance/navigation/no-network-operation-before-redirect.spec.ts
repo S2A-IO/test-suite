@@ -9,15 +9,15 @@ import 'mocha';
 
 describe( 'Navigation Performance - No network operation before a redirect', () => {
   // Get the build.
-  let build: any = getBuild( process.argv, process.cwd() );
+  const build: any = getBuild( process.argv, process.cwd() );
 
   // Given an array of actions, ensure there are no networking operations before
   // a redirect
   const checkActions = ( actions: any[] ): void => {
-    let networkOps: string[] = [];
+    const networkOps: string[] = [];
 
     for ( let j = 0; j < actions.length; j++ ) {
-      let a: any = actions[ j ];
+      const a: any = actions[ j ];
 
       // If we have a network operation.
       if ( a.task === 'pullpush' || a.task === 'push' || a.task === 'notify' ||
@@ -37,7 +37,7 @@ describe( 'Navigation Performance - No network operation before a redirect', () 
           JSON.stringify( networkOps ) + ' appears before ' + a.task + '@' + j );
       }
     }
-  }
+  };
 
   // Get all the actions.
   forAllActions( build, ( t: string, s: string, ss: string, i: number,
@@ -47,7 +47,7 @@ describe( 'Navigation Performance - No network operation before a redirect', () 
       checkActions( actions );
 
       if ( errorActions ) {
-        let keys: string[] = Object.keys( errorActions );
+        const keys: string[] = Object.keys( errorActions );
         for ( let j = 0; j < keys.length; j++ ) {
           checkActions( errorActions[ keys[ j ] ] );
         }

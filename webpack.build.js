@@ -12,6 +12,7 @@ const { UnusedFilesWebpackPlugin } = require( 'unused-files-webpack-plugin' );
 
 module.exports = {
   entry: {
+    client_performance: path.resolve( __dirname, 'src', 'client_performance' ),
     client_quality: path.resolve( __dirname, 'src', 'client_quality' )
   },
   target: 'node',
