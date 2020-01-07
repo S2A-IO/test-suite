@@ -9,22 +9,20 @@ import 'mocha';
 
 describe( 'Actions - goBack should not have other tasks', () => {
   // Get the build.
-  let build: any = getBuild( process.argv, process.cwd() );
+  const build: any = getBuild( process.argv, process.cwd() );
 
   // Given an array of actions, ensure that if there is goBack, then there are
   // no other actions.
   const checkActions = ( actions: any[] ): void => {
-    let networkOps: string[] = [];
-
     for ( let j = 0; j < actions.length; j++ ) {
-      let a: any = actions[ j ];
+      const a: any = actions[ j ];
 
       // If there is goBack, then there should be no other actions.
       if ( a.task === 'goBack' ) {
         assert( actions.length === 1, 'Actions with goBack should not have other tasks' );
       }
     }
-  }
+  };
 
   // Get all the actions.
   forAllActions( build, ( t: string, s: string, ss: string, i: number,
@@ -34,7 +32,7 @@ describe( 'Actions - goBack should not have other tasks', () => {
       checkActions( actions );
 
       if ( errorActions ) {
-        let keys: string[] = Object.keys( errorActions );
+        const keys: string[] = Object.keys( errorActions );
         for ( let j = 0; j < keys.length; j++ ) {
           checkActions( errorActions[ keys[ j ] ] );
         }

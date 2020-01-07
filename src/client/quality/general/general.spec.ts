@@ -9,7 +9,7 @@ import 'mocha';
 
 describe( 'App - General', () => {
   it( 'Should succesfully instantiate the application', () => {
-    let build = getBuild( process.argv, process.cwd() );
+    const build = getBuild( process.argv, process.cwd() );
     assert( build != null, 'Build is not null' );
   });
 });

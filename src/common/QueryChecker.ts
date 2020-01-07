@@ -18,7 +18,7 @@ import { ObjectSerializer } from './ObjectSerializer';
  * @returns {undefined} None.
  */
 export const checkQueryLimit = ( query: any, idx?: number ): void => {
-  let prefix: string = idx ? 'Step ' + idx + ': ' : '';
+  const prefix: string = idx ? 'Step ' + idx + ': ' : '';
 
   assert( query.limit != null, prefix + 'Queries should enforce a data limit' );
 
@@ -38,7 +38,7 @@ export const checkQueryLimit = ( query: any, idx?: number ): void => {
  * @returns {undefined} None.
  */
 export const checkQueryRefreshTime = ( query: any, idx?: number ): void => {
-  let prefix: string = idx ? 'Step ' + idx + ': ' : '';
+  const prefix: string = idx ? 'Step ' + idx + ': ' : '';
   assert( query.refresh >= 300, prefix + 'Query should have refresh time greater than 300 seconds' );
 };
 
@@ -56,8 +56,8 @@ export const checkQueryRefreshTime = ( query: any, idx?: number ): void => {
  */
 export const checkSimilarQueries = ( query: any, summary: string,
   map: Map<string, any>, idx?: number ): void => {
-  let prefix: string = idx ? 'Step ' + idx + ': ' : '';
-  let serializer = new ObjectSerializer();
+  const prefix: string = idx ? 'Step ' + idx + ': ' : '';
+  const serializer = new ObjectSerializer();
 
   // Create string from main query parts.
   let qString: string = query.branch === 'string' ? query.branch : query.branch.toString();
@@ -66,7 +66,7 @@ export const checkSimilarQueries = ( query: any, summary: string,
   qString += query.self;
 
   // If map entry for this query already exists.
-  let data: any = map.get( qString );
+  const data: any = map.get( qString );
 
   // We have found the data so need to compare our current query with it.
   if ( data ) {
@@ -91,7 +91,7 @@ export const checkSimilarQueries = ( query: any, summary: string,
  * @returns {undefined} None.
  */
 export const checkQueryLimitProjections = ( query: any, idx?: number ): void => {
-  let prefix: string = idx ? 'Step ' + idx + ': ' : '';
+  const prefix: string = idx ? 'Step ' + idx + ': ' : '';
 
   if ( query.limit > 10 ) {
     assert( query.map != null && query.map.values.length > 0,
@@ -113,20 +113,20 @@ export const checkQueryLimitProjections = ( query: any, idx?: number ): void => 
  */
 export const checkQueryReferenceKey = ( query: any, summary: string,
   map: Map<string, any>, idx?: number ): void => {
-  let prefix: string = idx ? 'Step ' + idx + ': ' : '';
-  let serializer = new ObjectSerializer();
+  const prefix: string = idx ? 'Step ' + idx + ': ' : '';
+  const serializer = new ObjectSerializer();
 
   // Get query reference.
-  let ref: string = typeof query.reference === 'string' ? query.reference : query.reference.toString();
-  let branch: string = typeof query.branch === 'string' ? query.branch : query.branch.toString();
+  const ref: string = typeof query.reference === 'string' ? query.reference : query.reference.toString();
+  const branch: string = typeof query.branch === 'string' ? query.branch : query.branch.toString();
 
   // If the reference for this query already exists.
-  let data: any = map.get( ref + branch );
+  const data: any = map.get( ref + branch );
 
   // We have found the data so need to compare our current query with it.
   if ( data ) {
     // Get the query string for this query.
-    let q: string = serializer.serialize( query );
+    const q: string = serializer.serialize( query );
 
     assert( q === data.query,
       prefix + 'Same reference is used for a different query at: ' + data.url );
@@ -150,8 +150,8 @@ export const checkQueryReferenceKey = ( query: any, summary: string,
  * @returns {undefined} None.
  */
 export const checkQueryFilters = ( query: any, idx?: number ): void => {
-  let prefix: string = idx ? 'Step ' + idx + ': ' : '';
-  let keys: string[] = Object.keys( query.filters );
+  const prefix: string = idx ? 'Step ' + idx + ': ' : '';
+  const keys: string[] = Object.keys( query.filters );
 
   // If there are filters, ensure there are filter reference fields.
   if ( keys.length > 0 ) {
@@ -160,7 +160,7 @@ export const checkQueryFilters = ( query: any, idx?: number ): void => {
 
     // Ensure the reference fields exist in the filter.
     for ( let k = 0; k < query.referenceFields.length; k++ ) {
-      let f: string = query.referenceFields[ k ];
+      const f: string = query.referenceFields[ k ];
       assert( query.filters[ f ] != null, prefix +
         'Filter reference key ' + f + ' does not exist' );
     }
@@ -177,7 +177,7 @@ export const checkQueryFilters = ( query: any, idx?: number ): void => {
  * @returns {undefined} None.
  */
 export const checkQueryIdKeys = ( query: any, idx?: number ): void => {
-  let prefix: string = idx ? 'Step ' + idx + ': ' : '';
+  const prefix: string = idx ? 'Step ' + idx + ': ' : '';
 
   // If the query has projections with reduce, then we should have idKeys.
   if ( query.projections ) {
@@ -195,7 +195,7 @@ export const checkQueryIdKeys = ( query: any, idx?: number ): void => {
       else availableKeys = query.projections.map.values;
 
       for ( let k = 0; k < query.idKeys.length; k++ ) {
-        let f: string = query.idKeys[ k ];
+        const f: string = query.idKeys[ k ];
         assert( availableKeys.indexOf( f ) >= 0, prefix + 'ID key ' + f
           + ' does not exist in the result with keys ' + availableKeys );
       }

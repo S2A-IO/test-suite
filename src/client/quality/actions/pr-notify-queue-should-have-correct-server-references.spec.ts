@@ -10,13 +10,13 @@ import 'mocha';
 
 describe( 'Actions - pr and notify should have correct server references', () => {
   // Get the build.
-  let build: any = getBuild( process.argv, process.cwd() );
-  let serverBuild: any = getServerBuild( process.argv, process.cwd() );
+  const build: any = getBuild( process.argv, process.cwd() );
+  const serverBuild: any = getServerBuild( process.argv, process.cwd() );
 
   // Given an array of actions, ensure corret usage of pr and notify.
   const checkActions = ( actions: any[] ): void => {
     for ( let j = 0; j < actions.length; j++ ) {
-      let a: any = actions[ j ];
+      const a: any = actions[ j ];
 
       // If there is goBack, then there should be no other actions.
       if ( a.task === 'pr' ) {
@@ -27,7 +27,7 @@ describe( 'Actions - pr and notify should have correct server references', () =>
           ': Server side does not have referenced key ' + a.reference + ' for notifyQueue task' );
       }
     }
-  }
+  };
 
   // Get all the actions.
   forAllActions( build, ( t: string, s: string, ss: string, i: number,
@@ -37,7 +37,7 @@ describe( 'Actions - pr and notify should have correct server references', () =>
       checkActions( actions );
 
       if ( errorActions ) {
-        let keys: string[] = Object.keys( errorActions );
+        const keys: string[] = Object.keys( errorActions );
         for ( let j = 0; j < keys.length; j++ ) {
           checkActions( errorActions[ keys[ j ] ] );
         }

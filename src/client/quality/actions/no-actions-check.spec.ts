@@ -9,7 +9,7 @@ import 'mocha';
 
 describe( 'Actions - There should be no empty actions', () => {
   // Get the build.
-  let build: any = getBuild( process.argv, process.cwd() );
+  const build: any = getBuild( process.argv, process.cwd() );
 
   // Get all the actions.
   forAllActions( build, ( t: string, s: string, ss: string, i: number,
@@ -19,7 +19,7 @@ describe( 'Actions - There should be no empty actions', () => {
 
       // If there are error actions.
       if ( errorActions ) {
-        let keys: string[] = Object.keys( errorActions )
+        const keys: string[] = Object.keys( errorActions );
 
         assert( keys.length > 0,
           'Error actions object should not be empty. Do not declare it, if not required' );

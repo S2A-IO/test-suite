@@ -6,7 +6,7 @@
 const path = require( 'path' );
 const fs = require( 'fs-extra' );
 
-import { getAppName, getBuild, getSrcRoot } from '../../loader';
+import { getBuild, getSrcRoot } from '../../loader';
 import { assert } from 'chai';
 import 'mocha';
 
@@ -19,19 +19,19 @@ import 'mocha';
  * @returns {boolean} exists          True if it exists, false otherwise.
  */
 function doesAssetExist( srcRoot: string, p: string ): Promise<boolean> {
-  let assetPath: string = p.startsWith( 'builds' ) ?
+  const assetPath: string = p.startsWith( 'builds' ) ?
     path.join( srcRoot, p ) : path.join( srcRoot, 'builds', p );
   return fs.pathExists( assetPath );
 }
 
 describe( 'Assets - Web', () => {
-  let build: any = getBuild( process.argv, process.cwd() );
-  let srcRoot: string = getSrcRoot( process.argv, process.cwd() );
+  const build: any = getBuild( process.argv, process.cwd() );
+  const srcRoot: string = getSrcRoot( process.argv, process.cwd() );
 
   /** Test 1 **/
   describe( '# Ensure all referenced web assets exist', () => {
-    let assets : any = build.assets;
-    let p: string[] = assets.web ? assets.web.css.concat( assets.web.js ) : [];
+    const assets: any = build.assets;
+    const p: string[] = assets.web ? assets.web.css.concat( assets.web.js ) : [];
 
     // Check all paths.
     for ( let i = 0; i < p.length; i++ ) {

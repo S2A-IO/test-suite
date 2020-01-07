@@ -24,7 +24,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-this-alias': 0,
     '@typescript-eslint/no-var-requires': 0,
-    complexity: [ 'error', 7 ],
+    complexity: [ 'error', 10 ],
     'max-depth': [ 'error', 4 ],
     'max-statements': [ 'error', 50 ],
     'no-console': [

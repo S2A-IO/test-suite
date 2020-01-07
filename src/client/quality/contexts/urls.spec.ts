@@ -16,8 +16,8 @@ import 'mocha';
  * @returns {boolean} exists          True if it exists, false otherwise.
  */
 function doesUrlExist( urls: any, url: string ): boolean {
-  let exists: boolean = true;
-  let parts: string[] = url.split( '/' );
+  const parts: string[] = url.split( '/' );
+  let exists = true;
 
   // Ensure the lenght of url parts is correct.
   if ( parts.length !== 4 ) exists = false;
@@ -31,14 +31,14 @@ function doesUrlExist( urls: any, url: string ): boolean {
 }
 
 describe( 'Contexts - URL', () => {
-  let build: any = getBuild( process.argv, process.cwd() );
+  const build: any = getBuild( process.argv, process.cwd() );
 
   describe( '# Check if URLs referenced in context exist', () => {
-    let ctxt: any[] = build.context;
+    const ctxt: any[] = build.context;
 
     // Check all contexts.
     for ( let i = 0; i < ctxt.length; i++ ) {
-      let c: any = ctxt[ i ];
+      const c: any = ctxt[ i ];
 
       // Check each prefix.
       it( 'Prefix: ' + c.prefix, () => {

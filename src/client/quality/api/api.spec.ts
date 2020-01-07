@@ -6,16 +6,15 @@
 const { JitClient } = require( 'jit/client' );
 
 import { getBuild } from '../../loader';
-import { assert } from 'chai';
 import 'mocha';
 
 describe( 'API Keys - Connectivity', () => {
-  let build: any = getBuild( process.argv, process.cwd() );
+  const build: any = getBuild( process.argv, process.cwd() );
   let client: any;
 
   // Check connectivity with anonmous user.
   it( 'Should connect with anonymous user', () => {
-    let jit = build.apiKeys.jit;
+    const jit = build.apiKeys.jit;
     client = new JitClient( jit.remoteUrl, build.path + '/' + jit.clientId,
       '', jit.clientScopes );
 

@@ -3,7 +3,7 @@
  *
  * @file Checks the case where there is no data in the report.
  */
-import { getBuild } from '../../loader';
+/*import { getBuild } from '../../loader';
 import { expect } from 'chai';
 import 'mocha';
 
@@ -16,3 +16,4 @@ describe( 'Reports - No data', () => {
     expect(result).to.equal('Hello world!');
   });
 });
+*/

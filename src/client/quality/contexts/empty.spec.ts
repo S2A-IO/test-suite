@@ -8,14 +8,14 @@ import { assert } from 'chai';
 import 'mocha';
 
 describe( 'Contexts - Need', () => {
-  let build: any = getBuild( process.argv, process.cwd() );
+  const build: any = getBuild( process.argv, process.cwd() );
 
   describe( '# Check if the context is really needed', () => {
-    let ctxt: any[] = build.context;
+    const ctxt: any[] = build.context;
 
     // Check all contexts.
     for ( let i = 0; i < ctxt.length; i++ ) {
-      let c: any = ctxt[ i ];
+      const c: any = ctxt[ i ];
 
       // Check each prefix.
       it( 'Prefix: ' + c.prefix, () => {
