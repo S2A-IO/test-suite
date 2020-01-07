@@ -21,6 +21,12 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    '@typescript-eslint/camelcase': [
+      'error',
+      {
+        allow: [ '^_', '__non_webpack_require__' ]
+      }
+    ],
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-this-alias': 0,
     '@typescript-eslint/no-var-requires': 0,
@@ -42,10 +48,10 @@ module.exports = {
       'always'
     ],
     'trailing-comma': 0,
-    camelcase: [
+    '@typescript-eslint/camelcase': [
       'error',
       {
-        allow: [ '^_' ]
+        allow: [ '^_', '__non_webpack_require__' ]
       }
     ]
   }
