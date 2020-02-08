@@ -15,7 +15,7 @@ describe( 'API Keys - Connectivity', () => {
   // Check connectivity with anonmous user.
   it( 'Should connect with anonymous user', () => {
     const jit = build.apiKeys.jit;
-    client = new JitClient( jit.remoteUrl, build.path + '/' + jit.clientId,
+    client = new JitClient( jit.localUrl, build.path + '/' + jit.clientId,
       '', jit.clientScopes );
 
     // Now connect.
