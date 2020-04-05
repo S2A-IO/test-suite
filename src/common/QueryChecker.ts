@@ -43,6 +43,22 @@ export const checkQueryRefreshTime = ( query: any, idx?: number ): void => {
 };
 
 /**
+ * Check remote and local only flags in a query. We want to have at most one of
+ * them set to true.
+ *
+ * @param {any} query           Query we are checking.
+ * @param {number} idx          Index for the action which executes this query,
+ *                              if applicable.
+ *
+ * @returns {undefined} None.
+ */
+export const checkQueryRemoteLocalFlags = ( query: any, idx?: number ): void => {
+  const prefix: string = idx ? 'Step ' + idx + ': ' : '';
+  assert( query.remoteOnly !== true || query.localOnly !== true,
+    prefix + 'Query should not have both remoteOnly and localOnly flags set to true' );
+};
+
+/**
  * Check reference in a query. We want to combine similar queries to have the same
  * results with the same reference for optimal cache usage.
  *
