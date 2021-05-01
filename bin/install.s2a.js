@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @author Copyright RIKSOF (Private) Limited.
  *
@@ -43,7 +45,7 @@ function updateLink( link, targetDirectory ) {
     if ( trgt !== targetDirectory ) {
       return fs.unlink( link )
       .then( function OnUnlink() {
-        return fs.symlink( targetDirectory, link, 'dir' );
+        return fs.symlink( targetDirectory, link, 'junction' );
       });
     }
 
@@ -52,7 +54,7 @@ function updateLink( link, targetDirectory ) {
   }).catch( function OnLinkDoesNotExist( e ) {
 
     // If link does not exist, then just create it.
-    return fs.symlink( targetDirectory, link, 'dir' );
+    return fs.symlink( targetDirectory, link, 'junction' );
   });
 }
 
